@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Cursor from '@/components/ui/Cursor'
 import EyeAnimation from '@/components/gallery/EyeAnimation'
 import { AmbientMusic } from '@/components/audio/AmbientMusic'
@@ -349,6 +349,46 @@ function ArchiveContent() {
 // ── UNLOCK SCREEN ──
 function UnlockScreen() {
   const [hasRequestedAccess, setHasRequestedAccess] = useState(false)
+  const [typedMessage, setTypedMessage] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
+  const typingRunIdRef = useRef(0)
+
+  useEffect(() => {
+    if (!hasRequestedAccess) return
+    typingRunIdRef.current += 1
+    const runId = typingRunIdRef.current
+
+    const messageParts = [
+      'You found me.',
+      'I did not expect it to be so fast.',
+      'The work is not ready yet.',
+      'Come back later.'
+    ]
+
+    setIsTyping(true)
+    setTypedMessage('')
+
+    async function run() {
+      const typeCharDelayMs = 18
+      const sentencePauseMs = 520
+
+      for (const part of messageParts) {
+        if (typingRunIdRef.current !== runId) return
+        for (const ch of `${part} `) {
+          if (typingRunIdRef.current !== runId) return
+          setTypedMessage(prev => prev + ch)
+          await new Promise(r => setTimeout(r, typeCharDelayMs))
+        }
+        await new Promise(r => setTimeout(r, sentencePauseMs))
+      }
+
+      if (typingRunIdRef.current !== runId) return
+      setIsTyping(false)
+    }
+
+    run()
+    return () => {}
+  }, [hasRequestedAccess])
 
   return (
     <div style={{
@@ -403,13 +443,35 @@ function UnlockScreen() {
 
       {hasRequestedAccess && (
         <div style={{
-          fontSize:'clamp(16px,2.4vw,22px)', fontWeight:300,
-          letterSpacing:'0.32em', color:'var(--light)',
-          textTransform:'uppercase', textAlign:'center',
-          marginTop:8, opacity:0,
+          width:'min(900px, 100vw)',
+          fontSize:'clamp(10px,1.8vw,16px)',
+          fontWeight:300,
+          letterSpacing:'0.04em',
+          color:'var(--light)',
+          textTransform:'none',
+          textAlign:'left',
+          marginTop:14,
+          opacity:0,
           animation:'fadeIn 1.2s ease forwards',
+          background:'rgba(8,8,8,0.55)',
+          padding:'16px 18px',
+          lineHeight:1.5,
+          fontFamily:'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace',
+          whiteSpace:'nowrap',
+          overflow:'hidden',
+          textOverflow:'clip',
         }}>
-          Coming Soon...
+          <span style={{ color:'rgba(240,240,236,0.55)' }}>$</span>{' '}
+          {typedMessage}
+          <span style={{
+            display:'inline-block',
+            width:10,
+            marginLeft:2,
+            opacity: isTyping ? 1 : 0,
+            animation: isTyping ? 'blink 0.9s steps(1) infinite' : undefined,
+          }}>
+            _
+          </span>
         </div>
       )}
     </div>

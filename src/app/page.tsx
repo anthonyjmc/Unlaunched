@@ -138,6 +138,7 @@ function Intro({ onEnter }: { onEnter: () => void }) {
         display:'flex', flexDirection:'column',
         alignItems:'center', justifyContent:'center',
         background:'transparent', cursor:'none',
+        paddingBottom:'16vmin',
       }}
     >
       <EyeAnimation size="50vmin" />
@@ -145,7 +146,7 @@ function Intro({ onEnter }: { onEnter: () => void }) {
       <div style={{
         fontSize:'clamp(52px,11vw,108px)', fontWeight:300,
         letterSpacing:'0.08em', color:'var(--white)', textTransform:'uppercase',
-        opacity:0, marginTop:10, marginBottom:6,
+        opacity:0, marginTop:'-15vmin', marginBottom:6,
         animation:'fadeUp 1.2s ease 3s forwards',
       }}>
         Unlaunched
@@ -287,13 +288,9 @@ function UnlockScreen() {
       background:'var(--black)',
       animation:'fadeIn 2s ease forwards',
     }}>
-      <svg style={{ opacity:0, animation:'fadeIn 2s ease 0.5s forwards', marginBottom:6 }}
-        width="48" height="48" viewBox="0 0 48 48">
-        <ellipse cx="24" cy="24" rx="20" ry="12" fill="none" stroke="#f0f0ec" strokeWidth="0.6" opacity="0.35"/>
-        <circle cx="24" cy="24" r="7" fill="none" stroke="#f0f0ec" strokeWidth="0.4" opacity="0.25"/>
-        <circle cx="24" cy="24" r="3.5" fill="#080808"/>
-        <circle cx="26" cy="22" r="1" fill="white" opacity="0.2"/>
-      </svg>
+      <div style={{ opacity:0, animation:'fadeIn 2s ease 0.5s forwards', marginBottom:6 }}>
+        <EyeAnimation size="10vmin" />
+      </div>
       <div style={{
         fontSize:'clamp(20px,4vw,38px)', fontWeight:300,
         letterSpacing:'0.1em', color:'var(--white)',

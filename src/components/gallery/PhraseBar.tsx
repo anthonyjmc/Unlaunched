@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { SECRET_PHRASE, EXCLUSIVE_URL } from '@/lib/artworks'
+import { SECRET_PHRASE } from '@/lib/artworks'
 
 interface Props {
   visible: boolean

@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { ARTWORKS, CAROUSEL_ORDER } from '@/lib/artworks'
-import { ARTWORK_THUMBS } from './ArtworkSVGs'
 
 interface Props {
   solved: boolean[]
@@ -92,7 +91,6 @@ export default function Carousel({ solved, onOpen }: Props) {
         {CAROUSEL_ORDER.map((artworkId, cardIndex) => {
           const artwork  = ARTWORKS[artworkId]
           const style    = getCardStyle(cardIndex, angle)
-          const ThumbSVG = ARTWORK_THUMBS[artworkId]
           const isSolved = solved[artworkId]
 
           return (
@@ -125,18 +123,14 @@ export default function Carousel({ solved, onOpen }: Props) {
                   overflow:'hidden', position:'relative',
                   transition:'border-color 0.4s',
                 }}>
-                  {artwork.media.kind === 'image' ? (
-                    <Image
-                      src={artwork.media.src}
-                      alt={artwork.media.alt ?? artwork.title}
-                      fill
-                      sizes="(max-width: 768px) 60vw, 420px"
-                      draggable={false}
-                      style={{ objectFit:'cover', userSelect:'none' }}
-                    />
-                  ) : (
-                    <ThumbSVG />
-                  )}
+                  <Image
+                    src={artwork.src}
+                    alt={artwork.alt}
+                    fill
+                    sizes="(max-width: 768px) 60vw, 420px"
+                    draggable={false}
+                    style={{ objectFit:'cover', userSelect:'none' }}
+                  />
                 </div>
 
                 {/* Label */}

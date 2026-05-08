@@ -1,16 +1,8 @@
 // ─────────────────────────────────────────────
 // ARTWORK CONFIG
-// Single source of truth. Each artwork picks how its modal art is rendered
-// via the discriminated `media` union:
-//   - { kind: 'svg' }                           → inline SVG component
-//   - { kind: 'rive',  src: 'file.riv' }        → Rive animation in /public/rive/
-//   - { kind: 'image', src: '/images/x.png' }   → static image (PNG, JPG, WEBP…)
+// Single source of truth for the gallery. Each artwork renders a static image
+// from /public/images/.
 // ─────────────────────────────────────────────
-
-export type ArtworkMedia =
-  | { kind: 'svg' }
-  | { kind: 'rive'; src: string }
-  | { kind: 'image'; src: string; alt?: string }
 
 export interface Artwork {
   id: number
@@ -21,7 +13,8 @@ export interface Artwork {
   // responsively across viewport sizes instead of using fixed pixel boxes.
   modalWidth: string
   modalHeight: string
-  media: ArtworkMedia
+  src: string
+  alt: string
 }
 
 // Reusable responsive sizes — keep things consistent across artworks.
@@ -37,7 +30,8 @@ export const ARTWORKS: Artwork[] = [
     cue: 'It has been watching you since you arrived. Look at what it hides behind when it finally closes.',
     modalWidth: MODAL_SQUARE,
     modalHeight: MODAL_SQUARE,
-    media: { kind: 'image', src: '/images/watcher.png', alt: 'The Watcher' },
+    src: '/images/watcher.png',
+    alt: 'The Watcher',
   },
   {
     id: 1,
@@ -46,7 +40,8 @@ export const ARTWORKS: Artwork[] = [
     cue: 'The trees are not hiding it. The oldest one is. Look at its skin.',
     modalWidth: MODAL_PORTRAIT_W,
     modalHeight: MODAL_PORTRAIT_H,
-    media: { kind: 'image', src: '/images/forest.png', alt: 'The Forest' },
+    src: '/images/forest.png',
+    alt: 'The Forest',
   },
   {
     id: 2,
@@ -55,7 +50,8 @@ export const ARTWORKS: Artwork[] = [
     cue: 'Metal remembers everything. Time wrote something into it. Look at what the rust chose to become.',
     modalWidth: MODAL_SQUARE,
     modalHeight: MODAL_SQUARE,
-    media: { kind: 'image', src: '/images/machine.png', alt: 'The Machine' },
+    src: '/images/machine.png',
+    alt: 'The Machine',
   },
   {
     id: 3,
@@ -64,7 +60,8 @@ export const ARTWORKS: Artwork[] = [
     cue: 'She carries it with her without knowing. It is written in what she wears.',
     modalWidth: MODAL_PORTRAIT_W,
     modalHeight: MODAL_PORTRAIT_H,
-    media: { kind: 'image', src: '/images/child.png', alt: 'The Child' },
+    src: '/images/child.png',
+    alt: 'The Child',
   },
   {
     id: 4,
@@ -73,13 +70,12 @@ export const ARTWORKS: Artwork[] = [
     cue: 'The dial has been tuned many times. Look at the marks it left behind.',
     modalWidth: MODAL_SQUARE,
     modalHeight: MODAL_SQUARE,
-    // Place the file at: public/images/signal.png  →  served at /images/signal.png
-    media: { kind: 'image', src: '/images/signal.png', alt: 'The Signal' },
+    src: '/images/signal.png',
+    alt: 'The Signal',
   },
 ]
 
 // Carousel display order (visual order in carousel, not solve order)
-export const CAROUSEL_ORDER = [4, 0, 2, 1, 3] // Signal, Watcher, Machine, Forest, Child
+export const CAROUSEL_ORDER = [4, 0, 2, 1, 3]
 
 export const SECRET_PHRASE = 'NOTHING EVER EXISTS BY ACCIDENT'
-export const EXCLUSIVE_URL = 'https://unlaunched.art/exclusive'

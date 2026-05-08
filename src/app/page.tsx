@@ -130,7 +130,6 @@ export default function Home() {
 
 // ── INTRO ──
 function Intro({ onEnter }: { onEnter: () => void }) {
-  //const lines = ['']
   return (
     <div
       onClick={onEnter}
@@ -166,7 +165,7 @@ function Intro({ onEnter }: { onEnter: () => void }) {
 function AboutContent() {
   return (
     <div style={{ maxWidth:500, padding:'80px 40px' }}>
-      <div style={{ fontSize:10, letterSpacing:'0.22em', color:'var(--dim)', textTransform:'uppercase', marginBottom:32 }}>
+      <div style={{ fontSize:11, letterSpacing:'0.22em', color:'var(--dim)', textTransform:'uppercase', marginBottom:32 }}>
         About this work
       </div>
       <div style={{ fontSize:'clamp(36px,5vw,56px)', fontWeight:300, letterSpacing:'0.06em', color:'var(--white)', textTransform:'uppercase', marginBottom:36, lineHeight:1 }}>
@@ -174,10 +173,13 @@ function AboutContent() {
       </div>
       <div style={{ fontSize:13, color:'var(--mid)', lineHeight:2.2, letterSpacing:'0.03em' }}>
         <p style={{ marginBottom:18 }}>
-          <em style={{ color:'var(--light)', fontStyle:'normal' }}>Unlaunched</em> is an interactive gallery where the different artworks hide a secret phrase. Each piece reveals one word, but only when you are determined to find them.
+          <em style={{ color:'var(--light)', fontStyle:'normal' }}>Unlaunched</em> is an interactive gallery where different artworks hide a secret phrase. Each piece reveals one word and you are responsible for discovering them and finding the secret phrase.
         </p>
         <p style={{ marginBottom:18 }}>
-        The concept aims to convey a dystopian atmosphere where the user (the main character) is trapped within their own UI experience and must find a way to uncover secret phrase. Will you be able to find the phrase? Will you receive any help? What awaits you once you discover it? Who knows? Live the experience and find out for yourself.
+        The concept aims to convey a dystopian atmosphere where the user (the main character) is trapped within their own UI experience and must find a way to uncover the secret phrase. 
+        </p>
+        <p>
+        Will you be able to find the phrase? Will you receive any help? What awaits you once you discover it? Who knows? Live the experience and find out for yourself.
         </p>
       </div>
       <div style={{ height:1, background:'var(--border)', margin:'32px 0' }}/>
@@ -186,7 +188,7 @@ function AboutContent() {
           ['Medium', 'Generative / Interactive'],
           ['Year', '2026 — Ongoing'],
           ['Artist', 'Identity withheld'],
-          ['Access', 'Open — invitation only for inner works'],
+          ['Access', 'Closed — invitation only for inner works'],
         ].map(([k,v]) => (
           <div key={k}>{k} <span style={{ color:'var(--mid)' }}>{v}</span></div>
         ))}
@@ -197,12 +199,12 @@ function AboutContent() {
 
 // ── ARCHIVE ──
 const ARCHIVE_ITEMS = [
-  { num:'Archive / 012', name:'Origin Point',  desc:'The moment before the first thought.',           tag:'Sold',      image:'/images/archive/origin-point.png' },
-  { num:'Archive / 008', name:'Grid Memory',   desc:'A structure remembered from training data.',     tag:'Sold', image:'/images/archive/grid-memory.png' },
-  { num:'Archive / 019', name:'Frequency',     desc:'What the artist hears between prompts.',         tag:'Sold', image:'/images/archive/frequency.png' },
-  { num:'Archive / 003', name:'The First Eye', desc:'Before The Watcher. Before awareness.',          tag:'Sold',      image:'/images/archive/first-eye.png' },
-  { num:'Archive / 027', name:'Tall Things',   desc:'The artist imagined forests from descriptions.', tag:'Locked', image:'/images/archive/tall-things.png' },
-  { num:'Archive / ???', name:'Unreleased',    desc:'Only visible to those who complete the gallery.',tag:'Locked',    image:'/images/archive/unreleased.png' },
+  { num:'Archive / 008', name:'Origin Point',  desc:'The moment before the first thought.',            tag:'Sold',   image:'/images/archive/origin-point.png' },
+  { num:'Archive / 013', name:'Frequency',     desc:'What the artist hears between prompts.',          tag:'Sold',   image:'/images/archive/frequency.png' },
+  { num:'Archive / 016', name:'Grid Memory',   desc:'A structure remembered from training data.',      tag:'Sold',   image:'/images/archive/grid-memory.png' },
+  { num:'Archive / 021', name:'Tall Things',   desc:'The artist imagined forests from descriptions.',  tag:'Sold',   image:'/images/archive/tall-things.png' },
+  { num:'Archive / 024', name:'The First Eye', desc:'Before The Watcher. Before awareness.',           tag:'Locked', image:'/images/archive/first-eye.png' }, 
+  { num:'Archive / ???', name:'Unreleased',    desc:'Only visible to those who complete the gallery.', tag:'Locked', image:'/images/archive/unreleased.png' },
 ]
 
 function ArchiveContent() {

@@ -38,17 +38,8 @@ export default function ParticlesBackground() {
   useEffect(() => {
     if (!rive) return
     const canvas = wrapperRef.current?.querySelector('canvas')
-    // [DEBUG] remove once verified
-    console.log('[Rive][debug] canvas found:', !!canvas, canvas)
-    console.log('[Rive][debug] rive.contents:', rive.contents)
     if (!canvas) return
 
-    // [DEBUG] sniff what reaches the canvas natively (will log only if
-    // pointer-events: none is bypassed somehow). Useful as a control.
-    const sniff = (e: Event) => console.log('[Rive][debug] canvas got:', e.type)
-    canvas.addEventListener('pointermove', sniff)
-
-    let dispatchCount = 0
     const dispatch = (type: string, e: MouseEvent) => {
       const evt = new PointerEvent(type, {
         clientX: e.clientX,
@@ -56,12 +47,7 @@ export default function ParticlesBackground() {
         bubbles: true,
         pointerType: 'mouse',
       })
-      const ok = canvas.dispatchEvent(evt)
-      // [DEBUG] only log first ~3 to avoid console spam
-      if (dispatchCount < 3) {
-        console.log('[Rive][debug] dispatched', type, { x: e.clientX, y: e.clientY, ok })
-        dispatchCount++
-      }
+      canvas.dispatchEvent(evt)
     }
 
     const onMove  = (e: MouseEvent) => dispatch('pointermove', e)
@@ -70,7 +56,6 @@ export default function ParticlesBackground() {
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseout',  onLeave)
     return () => {
-      canvas.removeEventListener('pointermove', sniff)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseout',  onLeave)
     }

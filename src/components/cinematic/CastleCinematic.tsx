@@ -89,20 +89,6 @@ export default function CastleCinematic({ onComplete }: CastleCinematicProps) {
           transition: 'opacity 1.2s ease',
         }}>
           <div style={{
-            fontSize: isMobile ? 'clamp(10px,2.6vw,12px)' : 'clamp(11px,1.3vw,15px)',
-            letterSpacing: isMobile ? '0.22em' : '0.35em',
-            color: 'rgba(200,200,180,0.5)',
-            textTransform: 'uppercase',
-            opacity: line1 ? 1 : 0,
-            transform: line1 ? 'translateY(0)' : 'translateY(8px)',
-            transition: 'opacity 1.4s ease, transform 1.4s ease',
-            textAlign: 'center',
-            maxWidth: '92vw',
-          }}>
-            You are exactly where I wanted you to be.
-          </div>
-
-          <div style={{
             fontFamily: "'Inter', sans-serif",
             fontSize: isMobile ? 'clamp(16px,6vw,28px)' : 'clamp(18px,3vw,38px)',
             fontWeight: 300,
@@ -116,7 +102,20 @@ export default function CastleCinematic({ onComplete }: CastleCinematicProps) {
             transition: 'opacity 1.8s ease, transform 1.8s ease',
             maxWidth: '92vw',
           }}>
-            Nothing ever exists<br />by accident.
+            Coming Soon...
+          </div>
+          <div style={{
+            fontSize: isMobile ? 'clamp(10px,2.6vw,12px)' : 'clamp(11px,1.3vw,15px)',
+            letterSpacing: isMobile ? '0.22em' : '0.35em',
+            color: 'rgba(200,200,180,0.5)',
+            textTransform: 'uppercase',
+            opacity: line1 ? 1 : 0,
+            transform: line1 ? 'translateY(0)' : 'translateY(8px)',
+            transition: 'opacity 1.4s ease, transform 1.4s ease',
+            textAlign: 'center',
+            maxWidth: '92vw',
+          }}>
+            June-15-2026
           </div>
         </div>
       )}

@@ -174,13 +174,13 @@ function AboutContent() {
       </div>
       <div style={{ fontSize:13, color:'var(--mid)', lineHeight:2.2, letterSpacing:'0.03em' }}>
         <p style={{ marginBottom:18 }}>
-          <em style={{ color:'var(--light)', fontStyle:'normal' }}>Unlaunched</em> is an interactive gallery where different artworks hide a secret phrase. Each piece reveals one word and you are responsible for discovering them and finding the secret phrase.
+          <em style={{ color:'var(--light)', fontStyle:'normal' }}>Unlaunched</em> is an interactive gallery where different artworks hide a secret phrase. Each piece reveals one word, and you are responsible for discovering them and uncovering the phrase.
         </p>
         <p style={{ marginBottom:18 }}>
-        The concept aims to convey a dystopian atmosphere where the user (the main character) is trapped within their own UI experience and must find a way to uncover the secret phrase. 
+        The concept aims to convey a dystopian atmosphere where the user — the main character — is trapped within their own UI experience and must find a way to uncover the secret phrase.
         </p>
         <p>
-        Will you be able to find the phrase? Will you receive any help? What awaits you once you discover it? Who knows? Live the experience and find out for yourself.
+        Will you be able to find it? Will you receive any help? What awaits you once you do? Who knows. Live the experience and find out for yourself.
         </p>
       </div>
       <div style={{ height:1, background:'var(--border)', margin:'32px 0' }}/>

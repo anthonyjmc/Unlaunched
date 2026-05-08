@@ -53,7 +53,7 @@ export default function Home() {
         animation:'vigPulse 6s ease-in-out infinite',
       }}/>
       <ParticlesBackground />
-      <Intro onEnter={() => setPage('gallery')} />
+      <Intro isMobile={isMobile} onEnter={() => setPage('gallery')} />
     </>
   )
 
@@ -193,7 +193,7 @@ export default function Home() {
 }
 
 // ── INTRO ──
-function Intro({ onEnter }: { onEnter: () => void }) {
+function Intro({ isMobile, onEnter }: { isMobile: boolean; onEnter: () => void }) {
   return (
     <div
       onClick={onEnter}
@@ -208,8 +208,14 @@ function Intro({ onEnter }: { onEnter: () => void }) {
       <EyeAnimation size="50vmin" />
 
       <div style={{
-        fontSize:'clamp(52px,11vw,108px)', fontWeight:300,
-        letterSpacing:'0.08em', color:'var(--white)', textTransform:'uppercase',
+        fontSize: isMobile ? 'clamp(40px,10.5vw,72px)' : 'clamp(52px,11vw,108px)',
+        fontWeight:300,
+        letterSpacing: isMobile ? '0.04em' : '0.08em',
+        color:'var(--white)',
+        textTransform:'uppercase',
+        maxWidth:'92vw',
+        textAlign:'center',
+        lineHeight:0.95,
         opacity:0, marginTop:'-15vmin', marginBottom:6,
         animation:'titleReveal 2s ease 3s forwards',
       }}>

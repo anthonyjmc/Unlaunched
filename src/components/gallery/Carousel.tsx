@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { ARTWORKS, CAROUSEL_ORDER } from '@/lib/artworks'
+import React from 'react'
 
 interface Props {
   solved: boolean[]
@@ -83,6 +84,7 @@ export default function Carousel({ solved, onOpen }: Props) {
         perspective:'1200px', perspectiveOrigin:'50% 50%',
       }}
     >
+      
       <div style={{
         width: 'clamp(300px,38vw,420px)',
         height: 'clamp(360px,46vw,500px)',
@@ -109,6 +111,15 @@ export default function Carousel({ solved, onOpen }: Props) {
               }}
             >
               <div style={{
+                position:'absolute', bottom:'100%', left:'50%',
+                transform:'translateX(-50%)',
+                width:'180%', height:'200px',
+                background:'radial-gradient(ellipse at bottom, rgba(240,240,236,0.08) 0%, transparent 65%)',
+                pointerEvents:'none',
+                opacity: style.isActive ? 1 : 0,
+                transition:'opacity 0.8s ease',
+              }}/>
+              <div style={{
                 position:'absolute', inset:0,
                 display:'flex', flexDirection:'column',
                 alignItems:'center', gap:14,
@@ -122,7 +133,19 @@ export default function Carousel({ solved, onOpen }: Props) {
                     : '1px solid rgba(240,240,236,0.1)',
                   overflow:'hidden', position:'relative',
                   transition:'border-color 0.4s',
-                }}>
+                }}
+                onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                  if (!style.isActive) return
+                  e.currentTarget.style.borderColor = 'rgba(240,240,236,0.3)'
+                  e.currentTarget.style.boxShadow = '0 0 40px rgba(240,240,236,0.06)'
+                }}
+                onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                  e.currentTarget.style.borderColor = isSolved
+                    ? 'rgba(240,240,236,0.28)'
+                    : 'rgba(240,240,236,0.1)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+                >
                   <Image
                     src={artwork.src}
                     alt={artwork.alt}

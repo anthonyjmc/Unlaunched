@@ -18,6 +18,7 @@ export default function Home() {
   const [solved, setSolved]       = useState([false,false,false,false,false])
   const [openArtwork, setOpenArtwork] = useState<number | null>(null)
   const [unlocked, setUnlocked]   = useState(false)
+  const [transitioning, setTransitioning] = useState(false)
 
   const handleSolve = (id: number) => {
     setSolved(prev => prev.map((v,i) => i === id ? true : v))
@@ -28,6 +29,13 @@ export default function Home() {
   if (page === null) return (
     <>
       <Cursor />
+      {/* Vignette pulsante — atmósfera LIMBO */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:52,
+        pointerEvents:'none',
+        background:'radial-gradient(ellipse at center, transparent 30%, rgba(8,8,8,0.6) 70%, rgba(8,8,8,0.97) 100%)',
+        animation:'vigPulse 6s ease-in-out infinite',
+      }}/>
       <ParticlesBackground />
       <Intro onEnter={() => setPage('gallery')} />
     </>
@@ -36,6 +44,13 @@ export default function Home() {
   return (
     <>
       <Cursor />
+      {/* Vignette pulsante — atmósfera LIMBO */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:52,
+        pointerEvents:'none',
+        background:'radial-gradient(ellipse at center, transparent 30%, rgba(8,8,8,0.6) 70%, rgba(8,8,8,0.97) 100%)',
+        animation:'vigPulse 6s ease-in-out infinite',
+      }}/>
       <AmbientMusic />
       <PerspectiveLines />
       <ParticlesBackground />
@@ -57,7 +72,14 @@ export default function Home() {
           {(['gallery','about','archive'] as Page[]).map(p => (
             <div
               key={p}
-              onClick={() => setPage(p)}
+              onClick={() => {
+                if (page === p) return
+                setTransitioning(true)
+                setTimeout(() => {
+                  setPage(p)
+                  setTransitioning(false)
+                }, 300)
+              }}
               style={{
                 fontSize:16, fontWeight:400, letterSpacing:'0.16em',
                 color: page === p ? 'var(--white)' : 'var(--mid)',
@@ -147,7 +169,7 @@ function Intro({ onEnter }: { onEnter: () => void }) {
         fontSize:'clamp(52px,11vw,108px)', fontWeight:300,
         letterSpacing:'0.08em', color:'var(--white)', textTransform:'uppercase',
         opacity:0, marginTop:'-15vmin', marginBottom:6,
-        animation:'fadeUp 1.2s ease 3s forwards',
+        animation:'titleReveal 2s ease 3s forwards',
       }}>
         Unlaunched
       </div>

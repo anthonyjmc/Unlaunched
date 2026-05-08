@@ -30,6 +30,7 @@ export default function PhraseBar({ visible, onUnlock }: Props) {
   }
 
   return (
+    
     <div style={{
       position:'fixed', bottom:0, left:0, right:0, zIndex:200,
       height:104,
@@ -40,6 +41,12 @@ export default function PhraseBar({ visible, onUnlock }: Props) {
       pointerEvents: visible ? 'auto' : 'none',
       transition:'opacity 0.5s ease',
     }}>
+      {/* Separador superior */}
+      <div style={{
+        position:'absolute', top:0, left:'10%', right:'10%',
+        height:'0px',
+        background:'linear-gradient(to right, transparent, rgba(240,240,236,0.12), transparent)',
+      }}/>
       <div style={{
         fontSize:14, letterSpacing:'0.22em',
         color:'var(--dim)', textTransform:'uppercase', flexShrink:0,

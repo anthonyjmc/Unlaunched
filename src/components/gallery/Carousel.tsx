@@ -13,16 +13,25 @@ interface Props {
 export default function Carousel({ solved, onOpen }: Props) {
   const [angle, setAngle]         = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [viewportWidth, setViewportWidth] = useState(0)
   const angleRef    = useRef(0)
   const targetRef   = useRef(0)
   const animRef     = useRef<number | null>(null)
   const N = CAROUSEL_ORDER.length
+  const isMobile = viewportWidth > 0 && viewportWidth < 768
+
+  useEffect(() => {
+    const update = () => setViewportWidth(window.innerWidth)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   // Card positions
   const getCardStyle = (cardIndex: number, currentAngle: number) => {
     const theta  = (cardIndex / N) * 360 + currentAngle
     const rad    = theta * Math.PI / 180
-    const r      = 720
+    const r      = isMobile ? Math.min(440, Math.max(260, viewportWidth * 0.62)) : 720
     const x      = Math.sin(rad) * r
     const z      = Math.cos(rad) * r - r
     const cosVal = (Math.cos(rad) + 1) / 2
@@ -54,6 +63,7 @@ export default function Carousel({ solved, onOpen }: Props) {
 
   // Wheel scroll
   useEffect(() => {
+    if (isMobile) return
     const el = document.getElementById('pg-gallery')
     if (!el) return
     const onWheel = (e: WheelEvent) => {
@@ -63,7 +73,7 @@ export default function Carousel({ solved, onOpen }: Props) {
     }
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
-  }, [rotate])
+  }, [rotate, isMobile])
 
   // Keyboard
   useEffect(() => {
@@ -75,19 +85,68 @@ export default function Carousel({ solved, onOpen }: Props) {
     return () => window.removeEventListener('keydown', onKey)
   }, [rotate])
 
+  // Swipe (mobile)
+  useEffect(() => {
+    if (!isMobile) return
+    const el = document.getElementById('pg-gallery')
+    if (!el) return
+
+    let startX = 0
+    let startY = 0
+    let hasMoved = false
+
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0]
+      if (!t) return
+      startX = t.clientX
+      startY = t.clientY
+      hasMoved = false
+    }
+
+    const onTouchMove = (e: TouchEvent) => {
+      const t = e.touches[0]
+      if (!t) return
+      const dx = t.clientX - startX
+      const dy = t.clientY - startY
+      if (Math.abs(dx) < 18 || Math.abs(dx) < Math.abs(dy)) return
+      hasMoved = true
+      e.preventDefault()
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!hasMoved) return
+      const t = e.changedTouches[0]
+      if (!t) return
+      const dx = t.clientX - startX
+      if (Math.abs(dx) < 42) return
+      if (dx < 0) rotate(-1)
+      else rotate(1)
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true })
+    el.addEventListener('touchmove', onTouchMove, { passive: false })
+    el.addEventListener('touchend', onTouchEnd, { passive: true })
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchmove', onTouchMove)
+      el.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [isMobile, rotate])
+
   return (
     <div
       id="carousel-wrap"
       style={{
-        position:'absolute', inset:0, top:80, bottom:112,
+        position:'absolute', inset:0, top:80, bottom:isMobile ? 152 : 112,
         display:'flex', alignItems:'center', justifyContent:'center',
         perspective:'1200px', perspectiveOrigin:'50% 50%',
+        touchAction: isMobile ? 'pan-y' : 'auto',
       }}
     >
       
       <div style={{
-        width: 'clamp(300px,38vw,420px)',
-        height: 'clamp(360px,46vw,500px)',
+        width: isMobile ? 'min(78vw, 320px)' : 'clamp(300px,38vw,420px)',
+        height: isMobile ? 'min(96vw, 400px)' : 'clamp(360px,46vw,500px)',
         position:'relative', transformStyle:'preserve-3d',
       }}>
         {CAROUSEL_ORDER.map((artworkId, cardIndex) => {
@@ -135,11 +194,13 @@ export default function Carousel({ solved, onOpen }: Props) {
                   transition:'border-color 0.4s',
                 }}
                 onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                  if (isMobile) return
                   if (!style.isActive) return
                   e.currentTarget.style.borderColor = 'rgba(240,240,236,0.3)'
                   e.currentTarget.style.boxShadow = '0 0 40px rgba(240,240,236,0.06)'
                 }}
                 onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                  if (isMobile) return
                   e.currentTarget.style.borderColor = isSolved
                     ? 'rgba(240,240,236,0.28)'
                     : 'rgba(240,240,236,0.1)'
@@ -150,7 +211,7 @@ export default function Carousel({ solved, onOpen }: Props) {
                     src={artwork.src}
                     alt={artwork.alt}
                     fill
-                    sizes="(max-width: 768px) 60vw, 420px"
+                    sizes="(max-width: 768px) 86vw, 420px"
                     draggable={false}
                     style={{ objectFit:'cover', userSelect:'none' }}
                   />

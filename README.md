@@ -23,9 +23,7 @@ npm run dev
 
 ## Deploy
 
-```bash
-npx vercel deploy
-```
+`Render`
 
 ## Secret phrase (for testing)
 

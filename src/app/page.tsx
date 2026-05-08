@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Cursor from '@/components/ui/Cursor'
 import EyeAnimation from '@/components/gallery/EyeAnimation'
 import { AmbientMusic } from '@/components/audio/AmbientMusic'
@@ -19,6 +19,22 @@ export default function Home() {
   const [openArtwork, setOpenArtwork] = useState<number | null>(null)
   const [unlocked, setUnlocked]   = useState(false)
   const [transitioning, setTransitioning] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 768)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  useEffect(() => {
+    if (!isMobile) return
+    if (!page) return
+    const el = document.querySelector(`[data-topnav-item="${page}"]`)
+    if (!(el instanceof HTMLElement)) return
+    el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [isMobile, page])
 
   const handleSolve = (id: number) => {
     setSolved(prev => prev.map((v,i) => i === id ? true : v))
@@ -58,17 +74,32 @@ export default function Home() {
       {/* NAV */}
       <nav style={{
         position:'fixed', top:0, left:0, right:0, zIndex:300,
-        height:80, display:'flex', alignItems:'center',
-        padding:'0 48px', justifyContent:'space-between',
+        height: isMobile ? 64 : 80,
+        display:'flex',
+        alignItems:'center',
+        padding: isMobile ? '0 16px' : '0 48px',
+        justifyContent:'space-between',
         background:'linear-gradient(to bottom, rgba(8,8,8,0.98) 60%, transparent)',
       }}>
         <div style={{
-          fontSize:22, fontWeight:500, letterSpacing:'0.18em',
+          fontSize: isMobile ? 16 : 22,
+          fontWeight:500,
+          letterSpacing: isMobile ? '0.14em' : '0.18em',
           color:'var(--white)', textTransform:'uppercase', cursor:'none',
+          whiteSpace:'nowrap',
         }}>
           Unlaunched
         </div>
-        <div style={{ display:'flex', gap:48 }}>
+        <div style={{
+          display:'flex',
+          gap: isMobile ? 18 : 48,
+          overflowX: isMobile ? 'auto' : 'visible',
+          WebkitOverflowScrolling: 'touch',
+          whiteSpace:'nowrap',
+          maxWidth: isMobile ? 124 : undefined,
+          scrollSnapType: isMobile ? 'x mandatory' : undefined,
+          paddingBottom: isMobile ? 2 : 0,
+        }}>
           {(['gallery','about','archive'] as Page[]).map(p => (
             <div
               key={p}
@@ -80,11 +111,22 @@ export default function Home() {
                   setTransitioning(false)
                 }, 300)
               }}
+              data-topnav-item={p}
               style={{
-                fontSize:16, fontWeight:400, letterSpacing:'0.16em',
+                fontSize: isMobile ? 12 : 16,
+                fontWeight:400,
+                letterSpacing:'0.16em',
                 color: page === p ? 'var(--white)' : 'var(--mid)',
                 cursor:'none', transition:'color 0.25s',
                 textTransform:'uppercase', userSelect:'none',
+                padding: isMobile ? '12px 8px' : 0,
+                minHeight: 44,
+                display:'flex',
+                alignItems:'center',
+                justifyContent: isMobile ? 'center' : undefined,
+                minWidth: isMobile ? 124 : undefined,
+                scrollSnapAlign: isMobile ? 'center' : undefined,
+                flex: isMobile ? '0 0 auto' : undefined,
               }}
               onMouseEnter={e => (e.currentTarget.style.color='var(--white)')}
               onMouseLeave={e => (e.currentTarget.style.color = page === p ? 'var(--white)' : 'var(--mid)')}
@@ -101,7 +143,7 @@ export default function Home() {
         opacity: page === 'gallery' ? 1 : 0,
         pointerEvents: page === 'gallery' ? 'auto' : 'none',
         transition:'opacity 0.7s ease',
-        paddingTop:80,
+        paddingTop: isMobile ? 64 : 80,
       }}>
         <Carousel solved={solved} onOpen={id => setOpenArtwork(id)} />
       </div>
@@ -124,7 +166,7 @@ export default function Home() {
         opacity: page === 'about' ? 1 : 0,
         pointerEvents: page === 'about' ? 'auto' : 'none',
         transition:'opacity 0.7s ease',
-        paddingTop:80,
+        paddingTop: isMobile ? 64 : 80,
         display:'flex', alignItems:'center', justifyContent:'center',
         overflowY: 'auto',
       }}>
@@ -138,7 +180,7 @@ export default function Home() {
         opacity: page === 'archive' ? 1 : 0,
         pointerEvents: page === 'archive' ? 'auto' : 'none',
         transition:'opacity 0.7s ease',
-        paddingTop:80,
+        paddingTop: isMobile ? 64 : 80,
         display:'flex', flexDirection:'column',
       }}>
         <ArchiveContent />

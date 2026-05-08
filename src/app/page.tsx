@@ -10,6 +10,7 @@ import PerspectiveLines from '@/components/backgrounds/PerspectiveLines'
 import Carousel from '@/components/gallery/Carousel'
 import ArtworkModal from '@/components/gallery/ArtworkModal'
 import PhraseBar from '@/components/gallery/PhraseBar'
+import CastleCinematic from '@/components/cinematic/CastleCinematic'
 
 type Page = 'gallery' | 'about' | 'archive'
 
@@ -352,6 +353,15 @@ function UnlockScreen() {
   const [typedMessage, setTypedMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const typingRunIdRef = useRef(0)
+  const [isMobile, setIsMobile] = useState(false)
+  const [showCinematic, setShowCinematic] = useState(false)
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 768)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   useEffect(() => {
     if (!hasRequestedAccess) return
@@ -419,7 +429,7 @@ function UnlockScreen() {
 
       {!hasRequestedAccess && (
         <div
-          onClick={() => setHasRequestedAccess(true)}
+          onClick={() => setShowCinematic(true)}
           style={{
             fontSize:11, letterSpacing:'0.22em', color:'var(--light)',
             textTransform:'uppercase', border:'1px solid var(--border2)',
@@ -440,13 +450,15 @@ function UnlockScreen() {
           Access exclusive artwork
         </div>
       )}
-
-      {hasRequestedAccess && (
+      {showCinematic && (
+        <CastleCinematic onComplete={() => setShowCinematic(false)} />
+      )}
+      {/* {hasRequestedAccess && (
         <div style={{
           width:'min(900px, 100vw)',
-          fontSize:'clamp(10px,1.8vw,16px)',
+          fontSize: isMobile ? 'clamp(12px,3.4vw,14px)' : 'clamp(10px,1.8vw,16px)',
           fontWeight:300,
-          letterSpacing:'0.04em',
+          letterSpacing: isMobile ? '0.02em' : '0.04em',
           color:'var(--light)',
           textTransform:'none',
           textAlign:'left',
@@ -455,9 +467,12 @@ function UnlockScreen() {
           animation:'fadeIn 1.2s ease forwards',
           background:'rgba(8,8,8,0.55)',
           padding:'16px 18px',
-          lineHeight:1.5,
+          lineHeight: isMobile ? 1.55 : 1.5,
           fontFamily:'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace',
-          whiteSpace:'nowrap',
+          whiteSpace: isMobile ? 'normal' : 'nowrap',
+          display: isMobile ? '-webkit-box' : undefined,
+          WebkitLineClamp: isMobile ? '2' : undefined,
+          WebkitBoxOrient: isMobile ? 'vertical' : undefined,
           overflow:'hidden',
           textOverflow:'clip',
         }}>
@@ -473,7 +488,7 @@ function UnlockScreen() {
             _
           </span>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
